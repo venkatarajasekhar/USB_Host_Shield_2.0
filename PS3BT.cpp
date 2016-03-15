@@ -23,12 +23,17 @@
 PS3BT::PS3BT(BTD *p, uint8_t btadr5, uint8_t btadr4, uint8_t btadr3, uint8_t btadr2, uint8_t btadr1, uint8_t btadr0) :
 BluetoothService(p) // Pointer to USB class instance - mandatory
 {
+        std::vector<BTD *> pBtd;
+        try{
         pBtd->my_bdaddr[5] = btadr5; // Change to your dongle's Bluetooth address instead
         pBtd->my_bdaddr[4] = btadr4;
         pBtd->my_bdaddr[3] = btadr3;
         pBtd->my_bdaddr[2] = btadr2;
         pBtd->my_bdaddr[1] = btadr1;
         pBtd->my_bdaddr[0] = btadr0;
+        }catch(...){
+         cout << "Exception";
+        }
 
         HIDBuffer[0] = 0x52; // HID BT Set_report (0x50) | Report Type (Output 0x02)
         HIDBuffer[1] = 0x01; // Report ID
@@ -162,19 +167,28 @@ void PS3BT::printStatusString() {
         if(PS3Connected || PS3NavigationConnected) {
                 strcpy_P(statusOutput, PSTR("\r\nConnectionStatus: "));
 
-                if(getStatus(Plugged)) strcat_P(statusOutput, PSTR("Plugged"));
-                else if(getStatus(Unplugged)) strcat_P(statusOutput, PSTR("Unplugged"));
+                if(getStatus(Plugged)) 
+                strcat_P(statusOutput, PSTR("Plugged"));
+                else if(getStatus(Unplugged)) 
+                strcat_P(statusOutput, PSTR("Unplugged"));
                 else strcat_P(statusOutput, PSTR("Error"));
 
                 strcat_P(statusOutput, PSTR(" - PowerRating: "));
 
-                if(getStatus(Charging)) strcat_P(statusOutput, PSTR("Charging"));
-                else if(getStatus(NotCharging)) strcat_P(statusOutput, PSTR("Not Charging"));
-                else if(getStatus(Shutdown)) strcat_P(statusOutput, PSTR("Shutdown"));
-                else if(getStatus(Dying)) strcat_P(statusOutput, PSTR("Dying"));
-                else if(getStatus(Low)) strcat_P(statusOutput, PSTR("Low"));
-                else if(getStatus(High)) strcat_P(statusOutput, PSTR("High"));
-                else if(getStatus(Full)) strcat_P(statusOutput, PSTR("Full"));
+                if(getStatus(Charging)) 
+                strcat_P(statusOutput, PSTR("Charging"));
+                else if(getStatus(NotCharging)) 
+                strcat_P(statusOutput, PSTR("Not Charging"));
+                else if(getStatus(Shutdown)) 
+                strcat_P(statusOutput, PSTR("Shutdown"));
+                else if(getStatus(Dying)) 
+                strcat_P(statusOutput, PSTR("Dying"));
+                else if(getStatus(Low))
+                strcat_P(statusOutput, PSTR("Low"));
+                else if(getStatus(High)) 
+                strcat_P(statusOutput, PSTR("High"));
+                else if(getStatus(Full)) 
+                strcat_P(statusOutput, PSTR("Full"));
                 else strcat_P(statusOutput, PSTR("Error"));
 
                 strcat_P(statusOutput, PSTR(" - WirelessStatus: "));
